@@ -1,0 +1,2 @@
+javaswingdev.swing.scroll.ModernScrollBarUI$InvisibleScrollBarButton
+javaswingdev.swing.scroll.ModernScrollBarUI

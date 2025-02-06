@@ -1,0 +1,388 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package learnMgt.view.main.Dialogs;
+
+import com.formdev.flatlaf.FlatLightLaf;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
+import learnMgt.model.Departments;
+import learnMgt.model.Users;
+import learnMgt.service.DepartmentService;
+import learnMgt.service.UsersService;
+import learnMgt.view.main.AdministratorMain;
+import learnMgt.view.main.InstructorMain;
+import learnMgt.view.main.LearnerMain;
+
+/**
+ *
+ * @author ELOHOME LTD
+ */
+public class SignUp extends javax.swing.JDialog {
+
+    /**
+     * Creates new form InstructorSignUp
+     */
+    public SignUp(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+        addRoleItem();
+        //addDepartmentItem();
+    }
+
+    public void addRoleItem(){
+        RoleBox.removeAllItems();
+        RoleBox.addItem("Administration");
+        RoleBox.addItem("Instructor");
+        RoleBox.addItem("Learner");
+    }
+//    public void addDepartmentItem(){
+//        departBox.removeAllItems();
+//        try {
+//             Registry registry = LocateRegistry.getRegistry("127.0.0.1", 5000);
+//            DepartmentService depService = (DepartmentService) registry.lookup("department"); 
+//       
+//            List<Departments> departList=depService.findAllDepartments();
+//            Iterator iterator=departList.iterator();
+//            while(iterator.hasNext()){
+//                Departments dep=(Departments)iterator.next();
+//                if(!dep.getName().isEmpty()){
+//                departBox.addItem(dep.getName());
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+    // Method to validate email address format
+    private boolean isValidEmail(String email) {
+        // Regular expression pattern for basic email validation
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        // Compile the pattern
+        Pattern pattern = Pattern.compile(emailRegex);
+        // Match the email against the pattern
+        Matcher matcher = pattern.matcher(email);
+        // Return true if the email matches the pattern, false otherwise
+        return matcher.matches();
+    }
+
+// Method to validate password format
+    private boolean isValidPassword(String password) {
+        // Regular expression pattern for password validation
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+        // Compile the pattern
+        Pattern pattern = Pattern.compile(passwordRegex);
+        // Match the password against the pattern
+        Matcher matcher = pattern.matcher(password);
+        // Return true if the password matches the pattern, false otherwise
+        return matcher.matches();
+    }
+
+
+    private boolean validateToken(String token, String email) {
+        try {
+            Registry registry = LocateRegistry.getRegistry("127.0.0.1", 5000);
+            UsersService userService = (UsersService) registry.lookup("department");
+            Users users = new Users();
+            Users predefinedToken = userService.searchUsers(users);
+            if (token.equals(predefinedToken)) {
+                // Send email with token to the instructor
+                sendTokenEmail(email, token);
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private void sendTokenEmail(String email, String token) {
+       
+    }
+
+    private void clearFields() {
+        // Assuming the first role is the default option
+        firstnameTxt.setText("");
+        lastNameTxt.setText("");
+        emailTxt.setText("");
+        //departBox.setSelectedIndex(0);
+        usernameTxt.setText("");
+        passwordTxt.setText("");
+        confirmPasswordTxt.setText("");
+
+    }
+    // Method to generate the registration date (set during user registration)
+
+    public static Timestamp generateRegistrationDate() {
+        // Get the current system time in milliseconds
+        long currentTimeMillis = System.currentTimeMillis();
+
+        // Create a new Date object representing the current time
+        Date currentDate = new Date(currentTimeMillis);
+
+        // Convert the Date object to a Timestamp object
+        return new Timestamp(currentDate.getTime());
+    }
+
+  
+   
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        firstnameTxt = new javax.swing.JTextField();
+        lastNameTxt = new javax.swing.JTextField();
+        RoleBox = new javax.swing.JComboBox<>();
+        emailTxt = new javax.swing.JTextField();
+        usernameTxt = new javax.swing.JTextField();
+        passwordTxt = new javax.swing.JPasswordField();
+        confirmPasswordTxt = new javax.swing.JPasswordField();
+        saveSignUp = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        idTxt = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        firstnameTxt.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        firstnameTxt.setBorder(javax.swing.BorderFactory.createTitledBorder("First Name"));
+
+        lastNameTxt.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lastNameTxt.setBorder(javax.swing.BorderFactory.createTitledBorder("Last Name"));
+
+        RoleBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        RoleBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Role"));
+
+        emailTxt.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        emailTxt.setBorder(javax.swing.BorderFactory.createTitledBorder("Email"));
+
+        usernameTxt.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        usernameTxt.setBorder(javax.swing.BorderFactory.createTitledBorder("Preffered Username"));
+
+        passwordTxt.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        passwordTxt.setBorder(javax.swing.BorderFactory.createTitledBorder("Password"));
+
+        confirmPasswordTxt.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        confirmPasswordTxt.setBorder(javax.swing.BorderFactory.createTitledBorder("Confirm Password"));
+
+        saveSignUp.setText("Save");
+        saveSignUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveSignUpActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(178, 178, 178));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Welcom to LearnHub! SignUp HERE!");
+
+        idTxt.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        idTxt.setBorder(javax.swing.BorderFactory.createTitledBorder("Registration Code"));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(passwordTxt)
+                        .addComponent(lastNameTxt)
+                        .addComponent(firstnameTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(idTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(RoleBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(usernameTxt)
+                            .addComponent(confirmPasswordTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(51, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(emailTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(saveSignUp, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(196, 196, 196))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(emailTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RoleBox, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(firstnameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(usernameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lastNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(passwordTxt)
+                    .addComponent(confirmPasswordTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addComponent(saveSignUp)
+                .addGap(26, 26, 26))
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void saveSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSignUpActionPerformed
+        // TODO add your handling code here:
+        int id=Integer.parseInt(idTxt.getText());        
+        String firstName = firstnameTxt.getText();
+        String lastName = lastNameTxt.getText();
+        String email = emailTxt.getText();
+        //Departments department = (Departments) departBox.getSelectedItem();
+        String username = usernameTxt.getText();
+        String password = new String(passwordTxt.getPassword());
+        String confirmPassword = new String(confirmPasswordTxt.getPassword());
+        String role = (String) RoleBox.getSelectedItem();
+        try {
+            if (id==0||firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()|| username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!isValidEmail(email)) {
+                JOptionPane.showMessageDialog(this, "Invalid email address", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!isValidPassword(password)) {
+                JOptionPane.showMessageDialog(this, "Password must be at least 8 characters long", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!password.equals(confirmPassword)) {
+                JOptionPane.showMessageDialog(this, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Check if the email already exists in the database
+            Registry registry = LocateRegistry.getRegistry("127.0.0.1", 5000);
+            UsersService userService = (UsersService) registry.lookup("user");
+            
+            Users newUser = new Users();
+            newUser.setUserid(id);
+            newUser.setFirstName(firstName);
+            newUser.setLastName(lastName);
+            newUser.setEmail(email);
+            //newUser.setDepartments(department);
+            newUser.setUsername(username);
+            newUser.setPassword(password);
+            newUser.setRole(role);
+//            if (userService.searchUsers(!newUser.getEmail().equals(email))) {
+//                JOptionPane.showMessageDialog(this, "Email already exists", "Error", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+            // During user registration, set the registration date
+            Timestamp registrationDate = this.generateRegistrationDate();
+            newUser.setRegistrationDate(registrationDate);
+
+           
+            Users registeredUser = userService.saveUsers(newUser);
+
+            if (registeredUser != null) {
+                //JOptionPane.showMessageDialog(this, "User registered successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                // Clear the input fields after successful registration
+                if ("Administration".equals(role)) {                 
+                        AdministratorMain admin = new AdministratorMain();
+                        admin.setVisible(true);
+                        clearFields();
+                        this.dispose();
+                    
+                }
+                if ("Instructor".equals(role)) {                 
+                        InstructorMain instructor = new InstructorMain();
+                        instructor.setVisible(true);
+                        clearFields();
+                        this.dispose();
+                    
+                }
+                if ("Learner".equals(role)) {
+                    LearnerMain learn = new LearnerMain();
+                    learn.setVisible(true);
+                    clearFields();
+                    this.dispose();
+                }
+
+                //clearFields();
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to register user", "Error", JOptionPane.ERROR_MESSAGE);
+
+                clearFields();
+                RoleBox.setSelectedIndex(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occurred", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_saveSignUpActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        try {
+            FlatLightLaf.setup();
+        } catch (Exception e) {
+        }
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                SignUp dialog = new SignUp(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> RoleBox;
+    private javax.swing.JPasswordField confirmPasswordTxt;
+    private javax.swing.JTextField emailTxt;
+    private javax.swing.JTextField firstnameTxt;
+    private javax.swing.JTextField idTxt;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField lastNameTxt;
+    private javax.swing.JPasswordField passwordTxt;
+    private javax.swing.JButton saveSignUp;
+    private javax.swing.JTextField usernameTxt;
+    // End of variables declaration//GEN-END:variables
+}
